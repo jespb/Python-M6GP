@@ -1,12 +1,12 @@
-This is a, easy-to-use, scikit-learn inspired version of the M6GP algorithm.
+This is an easy-to-use, scikit-learn inspired version of the M6GP algorithm.
 
 
 By using this file, you are agreeing to this product's EULA
-This product can be obtained in https://github.com/jespb/Python-M6GP
+This product can be obtained at https://github.com/jespb/Python-M6GP
 Copyright ©2023-2024 J. E. Batista
 
 
-This file contains information about the command and flags used in the stand-alone version of this implementation and an explanation on how to import, use and edit this implementation.
+This file contains information about the command and flags used in the stand-alone version of this implementation and an explanation of how to import, use, and edit this implementation.
 
 
 
@@ -24,10 +24,6 @@ $ python Main_M6GP_standalone.py
         - By default "datasets/" is used 
         - Use "-dsdir ./" for the root directory	
 
-    [-es elite_size]
-        - This flag expects an integer with the elite size;
-        - By default, the elite has size 1.
-
     [-md max_depth]
         - This flag expects an integer with the maximum initial depth for the trees;
         - By default, this value is set to 6.		
@@ -38,13 +34,13 @@ $ python Main_M6GP_standalone.py
 
     [-odir dir] 
         - States the output directory. 
-        - By default "results/" is used 
+        - By default, "results/" is used 
         - Use "-odir ./" for the root directory
 	
     [-op operators]
         - This flag excepts a set of operators and their number of arguments, separated by ";"
         - Allowed operators: +,2 ; -,2 ; *,2 ; /,2
-        - By default, the used operators are the sum, subtraction, multiplication and protected division: "+,2;-,2;*,2;/,2"	
+        - By default, the used operators are the sum, subtraction, multiplication, and protected division: "+,2;-,2;*,2;/,2"	
 
     [-ps population_size]
         - This flag expects an integer with the size of the population;
@@ -52,7 +48,7 @@ $ python Main_M6GP_standalone.py
 
     [-runs number_of_runs] 
         - This flag expects an integer with the number of runs to be made;
-        - By default, this values is set to 30
+        - By default, this value is set to 30
 	
     [-tf train_fraction]
         - This flag expects a float [0;1] with the fraction of the dataset to be used in training;
@@ -99,7 +95,6 @@ Arguments for M6GP():
     population_size	-> Population size (default: 500)
     max_generation	-> Maximum number of generations (default: 100)
     tournament_size	-> Tournament size (default: 5)
-    elitism_size	-> Elitism selection size (default: 1)
     limit_depth		-> Maximum individual depth (default: 17)
     threads 		-> Number of CPU threads to be used (default: 1)
     random_state	-> Random state (default: 42)
@@ -126,7 +121,7 @@ How to edit this implementation:
         - This implementation assumes that a higher fitness is always better. To change this, edit the __gt__ method in this class;
         - Warning: Since M6GP is a slow method, a fitness function that escalates well with the number of features is recommended. 
 
-    Classification method ( m6gp.Individual ):
+    Classification/regression algorithm ( m6gp.Individual ):
         - Change the createModel() method to use your own classifier;
         - Assuming it is a scykit-learn implementation, you may only need to change one line in this method;
         - Warning: Since M6GP is a slow method, a learning algorithm that escalates well with the number of features is recommended.
@@ -134,18 +129,17 @@ How to edit this implementation:
    
 
 
-Citation: 
-    If you use M6GP, please cite one the works below:
+Reference: 
 
-    @inproceedings{m6gp,
-  	%doi = {TBA},
+@inproceedings{m6gp,
+	%doi = {TBA},
   	%url = {https://doi.org/TBA},
   	year = {2024},
   	month = jun,
   	publisher = {{IEEE}},
   	author = {Joao E. Batista and Nuno M. Rodrigues and Leonardo Vanneschi},
   	title = {{M6GP: Multiobjective Feature Engineering}},
-  	booktitle = {2024 {IEEE} Congress on Evolutionary Computation ({CEC})}
-    }
+	booktitle = {2024 {IEEE} Congress on Evolutionary Computation ({CEC})}
+}
 
 
