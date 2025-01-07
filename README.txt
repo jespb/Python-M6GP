@@ -3,7 +3,7 @@ This is an easy-to-use, scikit-learn inspired version of the M6GP algorithm.
 
 By using this file, you are agreeing to this product's EULA
 This product can be obtained at https://github.com/jespb/Python-M6GP
-Copyright ©2023-2024 J. E. Batista
+Copyright ©2023-2025 J. E. Batista
 
 
 This file contains information about the command and flags used in the stand-alone version of this implementation and an explanation of how to import, use, and edit this implementation.
