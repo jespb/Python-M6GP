@@ -132,8 +132,8 @@ How to edit this implementation:
 Reference: 
 
 @inproceedings{m6gp,
-	%doi = {TBA},
-  	%url = {https://doi.org/TBA},
+	%doi = {10.1109/CEC60901.2024.10612107},
+  	%url = {https://ieeexplore.ieee.org/abstract/document/10612107},
   	year = {2024},
   	month = jun,
   	publisher = {{IEEE}},
@@ -141,5 +141,11 @@ Reference:
   	title = {{M6GP: Multiobjective Feature Engineering}},
 	booktitle = {2024 {IEEE} Congress on Evolutionary Computation ({CEC})}
 }
+
+
+You may also be interested in other works related to measuring the complexity of feature engineering models:
+ - https://ieeexplore.ieee.org/abstract/document/10611989
+ - https://www.sciencedirect.com/science/article/pii/S2210650224002992
+
 
 
