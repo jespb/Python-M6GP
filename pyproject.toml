@@ -1,0 +1,23 @@
+[project]
+name = "m6gp"
+version = "1.0.0"
+description = "Python implementation of the M6GP algorithm, a multi-objective genetic programming algorithm for feature engineering"
+authors = [
+    { name = "João Eduardo Batista", email = "joao.batista@riken.jp" }
+]
+readme = "README.txt"
+requires-python = "~=3.8"
+
+[project.urls]
+homepage = "https://github.com/jespb/Python-M6GP"
+repository = "https://github.com/jespb/Python-M6GP"
+documentation = "https://github.com/jespb/Python-M6GP"
+
+[project.license]
+text = "https://opensource.org/licenses/MIT"
+
+[build-system]
+build-backend = 'setuptools.build_meta'
+requires = [
+    'setuptools >= 43.0.0',
+]
