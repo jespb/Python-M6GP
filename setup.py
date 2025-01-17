@@ -1,4 +1,4 @@
-import setuptools
+from setuptools import setup
 
 setup(
     name="m6gp",  # Replace with your project's name
