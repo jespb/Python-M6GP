@@ -132,8 +132,8 @@ How to edit this implementation:
 Reference: 
 
 @inproceedings{m6gp,
-	%doi = {10.1109/CEC60901.2024.10612107},
-  	%url = {https://ieeexplore.ieee.org/abstract/document/10612107},
+	doi = {10.1109/CEC60901.2024.10612107},
+  	url = {https://ieeexplore.ieee.org/abstract/document/10612107},
   	year = {2024},
   	month = jun,
   	publisher = {{IEEE}},
