@@ -18,6 +18,7 @@ text = "https://opensource.org/licenses/MIT"
 
 [build-system]
 build-backend = 'setuptools.build_meta'
+packages = "m6gp"
 requires = [
     'setuptools >= 43.0.0',
 ]
