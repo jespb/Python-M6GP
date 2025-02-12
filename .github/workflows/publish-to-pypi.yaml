@@ -12,9 +12,9 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Debug OIDC Token
-      run: |
-      echo "Checking OIDC Token..."
-      env | grep ACTIONS_ID_TOKEN_REQUEST
+      run: | 
+         echo "Checking OIDC Token..." 
+         env | grep ACTIONS_ID_TOKEN_REQUEST
     - name: Set up Python 3.10
       uses: actions/setup-python@v4
       with:
