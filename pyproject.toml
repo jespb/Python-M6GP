@@ -8,6 +8,9 @@ authors = [
 readme = "README.txt"
 requires-python = "~=3.8"
 
+[tool.pypi-publish]
+repository = "pypi"
+
 [project.urls]
 homepage = "https://github.com/jespb/Python-M6GP"
 repository = "https://github.com/jespb/Python-M6GP"
