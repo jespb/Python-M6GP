@@ -1,5 +1,9 @@
 name: Publish Python distributions to PyPI
 
+permissions:
+  id-token: write  # Required for OIDC token generation
+  contents: read   # Needed to read repository contents
+
 on: push
 jobs:
   build-n-publish:
