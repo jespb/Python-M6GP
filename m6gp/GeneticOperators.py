@@ -127,7 +127,7 @@ def STXO(rng, population, tournament_size):
 
 	ret = []
 	for d in [d1,d2]:
-		i = Individual(ind1.operators, ind1.terminals, ind1.max_depth, ind1.model_name, ind1.fitnesses)
+		i = Individual(ind1.operators, ind1.terminals, ind1.max_depth, ind1.model_class, ind1.fitnesses)
 		i.copy(d)
 		ret.append(i)
 	return ret
@@ -156,7 +156,7 @@ def M5XO(rng, population, tournament_size):
 
 	ret = []
 	for d in [d1,d2]:
-		i = Individual(ind1.operators, ind1.terminals, ind1.max_depth, ind1.model_name, ind1.fitnesses)
+		i = Individual(ind1.operators, ind1.terminals, ind1.max_depth, ind1.model_class, ind1.fitnesses)
 		i.copy(d)
 		ret.append(i)
 	return ret
@@ -179,7 +179,7 @@ def STMUT(rng, population, tournament_size):
 
 
 	ret = []
-	i = Individual(ind1.operators, ind1.terminals, ind1.max_depth, ind1.model_name, ind1.fitnesses)
+	i = Individual(ind1.operators, ind1.terminals, ind1.max_depth, ind1.model_class, ind1.fitnesses)
 	i.copy(d1)
 	ret.append(i)
 	return ret
@@ -200,7 +200,7 @@ def M5ADD(rng, population, tournament_size):
 	n.create(rng, ind1.operators, ind1.terminals, ind1.max_depth)
 	d1.append(n)
 
-	i = Individual(ind1.operators, ind1.terminals, ind1.max_depth, ind1.model_name, ind1.fitnesses)
+	i = Individual(ind1.operators, ind1.terminals, ind1.max_depth, ind1.model_class, ind1.fitnesses)
 	i.copy(d1)
 	ret.append(i)
 
@@ -221,7 +221,7 @@ def M5REM(rng, population, tournament_size):
 	r1 = rng.randint(0,len(d1)-1)
 	d1.pop(r1)
 		
-	i = Individual(ind1.operators, ind1.terminals, ind1.max_depth, ind1.model_name, ind1.fitnesses)
+	i = Individual(ind1.operators, ind1.terminals, ind1.max_depth, ind1.model_class, ind1.fitnesses)
 	i.copy(d1)
 	ret.append(i)
 	

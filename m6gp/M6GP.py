@@ -4,6 +4,9 @@ import multiprocessing as mp
 import time
 import matplotlib.pyplot as plt
 
+
+from .MahalanobisDistanceClassifier import MahalanobisDistanceClassifier
+
 from random import Random
 
 # 
@@ -38,7 +41,7 @@ class M6GP:
 	dim_min: int = None
 	dim_max: int = None
 
-	model_name = None 
+	model_class = None 
 	fitnesses = None
 
 	verbose = None
@@ -76,7 +79,7 @@ class M6GP:
 	def __init__(self, operators=[("+",2),("-",2),("*",2),("/",2)], max_initial_depth = 6, 
 		population_size = 500, max_generation = 100, max_depth = 17, tournament_size = 5,
 		dim_min = 1, dim_max = 9999, threads=1, random_state = 42, verbose = True, 
-		model_name="RandomForestClassifier", fitnesses=["Accuracy","Size"]):
+		model_class=None, fitnesses=["Accuracy","Size"]):
 
 		if sum( [0 if op in [("+",2),("-",2),("*",2),("/",2)] else 0 for op in operators ] ) > 0:
 			print( "[Warning] Some of the following operators may not be supported:", operators)
@@ -95,7 +98,10 @@ class M6GP:
 		self.dim_min = max(1, dim_min)
 		self.dim_max = max(1, dim_max)
 
-		self.model_name = model_name
+		self.model_class = model_class
+		if self.model_class is None:
+			self.model_class = MahalanobisDistanceClassifier()
+
 		self.fitnesses = fitnesses
 
 		self.verbose = verbose
@@ -191,7 +197,7 @@ class M6GP:
 			print("    > Max Depth:          "+str(self.max_depth))
 			print("    > Minimum Dimensions: "+str(self.dim_min))
 			print("    > Maximum Dimensions: "+str(self.dim_max))
-			print("    > Wrapped Model:      "+self.model_name)
+			print("    > Wrapped Model:      "+self.model_class.__class__.__name__)
 			print("    > Fitnesses:          "+" - ".join(self.fitnesses))
 			print("    > Threads:            "+str(self.threads))
 			print()
@@ -207,7 +213,7 @@ class M6GP:
 		self.population = []
 
 		while len(self.population) < self.population_size:
-			ind = Individual(self.operators, self.terminals, self.max_depth, self.model_name, self.fitnesses)
+			ind = Individual(self.operators, self.terminals, self.max_depth, self.model_class, self.fitnesses)
 			ind.create(self.rng, n_dims = self.dim_min)
 			self.population.append(ind)
 
@@ -370,8 +376,8 @@ class M6GP:
 			if not self.Te_x is None:
 				print("   > Gen #%2d:  Fitness: [ %s ] // Tr-Score: %.6f // Te-Score: %.6f  // Time: %.4f" % (self.currentGeneration, " - ".join("%.4f"%x for x in self.bestIndividual.getFitnesses()), self.bestIndividual.getTrainingMeasure(), self.bestIndividual.getTestMeasure(self.Te_x, self.Te_y), end- begin )  )
 			else:
-				print("   > Gen #%2d:  Fitness: %.6f // Tr-Score: %.6f // Time: %.4f" % (self.currentGeneration, self.bestIndividual.getFitnesses(),  self.bestIndividual.getTrainingMeasure(), end- begin )  )
-
+				print("   > Gen #%2d:  Fitness: [ %s ] // Tr-Score: %.6f // Time: %.4f" % (self.currentGeneration, " - ".join("%.4f"%x for x in self.bestIndividual.getFitnesses()), self.bestIndividual.getTrainingMeasure(), end- begin )  )
+			
 
 
 

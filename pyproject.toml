@@ -1,6 +1,6 @@
 [project]
 name = "m6gp"
-version = "1.0.0"
+version = "1.1.0"
 description = "Python implementation of the M6GP algorithm, a multi-objective genetic programming algorithm for feature engineering"
 authors = [
     { name = "João Eduardo Batista", email = "joao.batista@riken.jp" }

@@ -7,13 +7,14 @@ import pandas as pd
 
 from sklearn.metrics import accuracy_score, f1_score, cohen_kappa_score, mean_squared_error
 
+from copy import deepcopy
 
 # 
 # By using this file, you are agreeing to this product's EULA
 #
 # This product can be obtained in https://github.com/jespb/Python-M6GP
 #
-# Copyright ©2023-2024 J. E. Batista
+# Copyright ©2023-2025 J. E. Batista
 #
 
 
@@ -37,11 +38,11 @@ class Individual:
 
 	model = None
 
-	def __init__(self, operators, terminals, max_depth, model_name="RandomForestClassifier", fitnesses=["Accuracy","Size"]):
+	def __init__(self, operators, terminals, max_depth, model_class=None, fitnesses=["Accuracy","Size"]):
 		self.operators = operators
 		self.terminals = terminals
 		self.max_depth = max_depth
-		self.model_name = model_name
+		self.model_class = model_class
 		self.fitnesses = fitnesses
 
 	def create(self,rng, n_dims=1):
@@ -69,14 +70,7 @@ class Individual:
 
 
 	def createModel(self):
-		if self.model_name == "MahalanobisDistanceClassifier":
-			return MahalanobisDistanceClassifier()
-		elif self.model_name == "RandomForestClassifier":
-			return RandomForestClassifier(random_state = 42, max_depth=4, n_estimators=5)
-		elif self.model_name == "DecisionTreeClassifier":
-			return DecisionTreeClassifier(random_state = 42, max_depth=4)
-		elif self.model_name == "DecisionTreeRegressor":
-			return DecisionTreeRegressor(random_state = 42, max_depth=6)
+		return deepcopy(self.model_class)
 
 	def fit(self, Tr_x, Tr_y):
 		'''
@@ -352,7 +346,7 @@ class Individual:
 
 		dup = self.dimensions[:]
 		i = 0
-		ind = Individual(self.operators, self.terminals, self.max_depth, self.model_name, self.fitnesses)
+		ind = Individual(self.operators, self.terminals, self.max_depth, self.model_class, self.fitnesses)
 		ind.copy(dup)
 
 		ind.fit(self.training_X, self.training_Y)
@@ -360,7 +354,7 @@ class Individual:
 		while i < len(dup) and len(dup) > min_dim:
 			dup2 = dup[:]
 			dup2.pop(i)
-			ind2 = Individual(self.operators, self.terminals, self.max_depth, self.model_name, self.fitnesses)
+			ind2 = Individual(self.operators, self.terminals, self.max_depth, self.model_class, self.fitnesses)
 			ind2.copy(dup2)
 			ind2.fit(self.training_X, self.training_Y)
 

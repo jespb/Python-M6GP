@@ -1,11 +1,16 @@
+
 from sys import argv
+
+from m3gp.MahalanobisDistanceClassifier import MahalanobisDistanceClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeRegressor
 
 # 
 # By using this file, you are agreeing to this product's EULA
 #
 # This product can be obtained in https://github.com/jespb/Python-M6GP
 #
-# Copyright ©2023-2024 J. E. Batista
+# Copyright ©2023-2025 J. E. Batista
 #
 
 
@@ -55,7 +60,8 @@ DIM_MAX = 9999
 RANDOM_STATE = 42
 
 # Models wrapped by the M6GP models
-MODEL_NAME = ["MahalanobisDistanceClassifier", "RandomForestClassifier", "DecisionTreeClassifier", "DecisionTreeRegressor"][0]
+MODEL = [MahalanobisDistanceClassifier(), RandomForestClassifier(max_depth=6), DecisionTreeRegressor(max_depth=6)][0]
+MODEL_NAME = MODEL.__class__.__name__
 
 # Fitness used by the M6GP models
 FITNESSES = ["2FOLD", "Size"]
