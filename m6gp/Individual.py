@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from .MahalanobisDistanceClassifier import MahalanobisDistanceClassifier
 
 import pandas as pd
-
+import numpy as np 
 from sklearn.metrics import accuracy_score, f1_score, cohen_kappa_score, mean_squared_error
 
 from copy import deepcopy
@@ -320,9 +320,13 @@ class Individual:
 		'''
 		Returns the converted input space.
 		'''
+		max_float32 = np.finfo(np.float32).max
+		min_float32 = np.finfo(np.float32).min
 		ret = pd.DataFrame()
 		for i in range(len(self.dimensions)):
 			a = self.dimensions[i].calculate(X)
+			a[a ==  np.inf] = max_float32
+			a[a == -np.inf] = min_float32
 			ret["#"+str(i)] = a
 		return ret
 
