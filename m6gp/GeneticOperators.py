@@ -6,7 +6,7 @@ from .Node import Node
 #
 # This product can be obtained in https://github.com/jespb/Python-M6GP
 #
-# Copyright ©2023-2024 J. E. Batista
+# Copyright ©2023-2025 J. E. Batista
 #
 
 
@@ -58,7 +58,7 @@ def getParetoFrontier(population):
 	return frontier
 
 
-def getOffspring(rng, population, tournament_size):
+def getOffspring(rng, population, tournament_size, dim_max=9999):
 	'''
 	Genetic Operator: Selects a genetic operator and returns a list with the 
 	offspring Individuals. The crossover GOs return two Individuals and the
@@ -81,15 +81,15 @@ def getOffspring(rng, population, tournament_size):
 		if whichXO == 0:
 			desc = STXO(rng, population, tournament_size)
 		elif whichXO == 1:
-			desc = M5XO(rng, population, tournament_size)
+			desc = M6XO(rng, population, tournament_size)
 	else:
 		whichMut = availableMT[ rng.randint(0,len(availableMT)-1 ) ]
 		if whichMut == 0:
 			desc = STMUT(rng, population, tournament_size)
 		elif whichMut == 1:
-			desc = M5ADD(rng, population, tournament_size)
+			desc = M6ADD(rng, population, tournament_size, dim_max)
 		elif whichMut == 2:
-			desc = M5REM(rng, population, tournament_size)
+			desc = M6REM(rng, population, tournament_size)
 	return desc
 
 
@@ -132,7 +132,7 @@ def STXO(rng, population, tournament_size):
 		ret.append(i)
 	return ret
 
-def M5XO(rng, population, tournament_size):
+def M6XO(rng, population, tournament_size):
 	'''
 	Randomly selects one dimension from each of two individuals; swaps the 
 	dimensions; and returns the two new Individuals as the offspring.
@@ -184,7 +184,7 @@ def STMUT(rng, population, tournament_size):
 	ret.append(i)
 	return ret
 
-def M5ADD(rng, population, tournament_size):
+def M6ADD(rng, population, tournament_size, dim_max):
 	'''
 	Randomly generates a new node using Grow; this node is added to the list of
 	dimensions; the new Individual is returned as the offspring.
@@ -196,6 +196,11 @@ def M5ADD(rng, population, tournament_size):
 	ret = []
 
 	d1 = ind1.getDimensions()
+
+	if len(d1) >= dim_max:
+		# This mutation wont increase the dimensionality of models in the dim limit
+		return ind1
+
 	n = Node()
 	n.create(rng, ind1.operators, ind1.terminals, ind1.max_depth)
 	d1.append(n)
@@ -206,7 +211,7 @@ def M5ADD(rng, population, tournament_size):
 
 	return ret
 
-def M5REM(rng, population, tournament_size):
+def M6REM(rng, population, tournament_size):
 	'''
 	Randomly selects one dimensions from a single individual; that dimensions is
 	removed; the new Individual is returned as the offspring.

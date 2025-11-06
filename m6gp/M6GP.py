@@ -363,7 +363,7 @@ class M6GP:
 		newPopulation = []
 
 		while len(newPopulation) < self.population_size:
-			offspring = getOffspring(self.rng, self.population, self.tournament_size)
+			offspring = getOffspring(self.rng, self.population, self.tournament_size, self.dim_max)
 			offspring = discardIndividualWithInvalidSize(offspring, self.dim_min, self.dim_max, self.max_depth)
 			newPopulation.extend(offspring)
 		self.old_population = self.population
