@@ -1,5 +1,6 @@
 This is an easy-to-use, scikit-learn inspired version of the M6GP algorithm.
 
+Also available through: `pip install m6gp`
 
 By using this file, you are agreeing to this product's EULA
 This product can be obtained at https://github.com/jespb/Python-M6GP
@@ -130,17 +131,17 @@ How to edit this implementation:
 
 
 Reference: 
-
-@inproceedings{m6gp,
+	
+	@inproceedings{m6gp,
 	doi = {10.1109/CEC60901.2024.10612107},
-  	url = {https://ieeexplore.ieee.org/abstract/document/10612107},
-  	year = {2024},
-  	month = jun,
-  	publisher = {{IEEE}},
-  	author = {Joao E. Batista and Nuno M. Rodrigues and Leonardo Vanneschi},
-  	title = {{M6GP: Multiobjective Feature Engineering}},
+	url = {https://ieeexplore.ieee.org/abstract/document/10612107},
+	year = {2024},
+	month = jun,
+	publisher = {{IEEE}},
+	author = {Joao E. Batista and Nuno M. Rodrigues and Leonardo Vanneschi},
+	title = {{M6GP: Multiobjective Feature Engineering}},
 	booktitle = {2024 {IEEE} Congress on Evolutionary Computation ({CEC})}
-}
+	}
 
 
 You may also be interested in other works related to measuring the complexity of feature engineering models:
