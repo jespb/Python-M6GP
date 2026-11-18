@@ -125,7 +125,7 @@ class Node:
 		'''
 		if self.branches == None:
 			try:
-				return np.array( sample[self.value] )#.astype("float64")
+				return np.asarray( sample[self.value], dtype=np.float64 )
 			except:
 				return np.array( [float(self.value)]*sample.shape[0] )
 
@@ -158,7 +158,7 @@ class Node:
 				return np.array(a)
 
 			else:
-				assert False ("[ERROR] Node.calculate(self,value) > Operator %s not implemented." %self.value)
+				raise ValueError("Operator '%s' is not implemented. Add it to m6gp.Node.calculate." % self.value)
 				
 
 	def isLeaf(self):

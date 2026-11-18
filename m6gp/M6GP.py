@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from .MahalanobisDistanceClassifier import MahalanobisDistanceClassifier
 
 from random import Random
+from copy import deepcopy
 
 # 
 # By using this file, you are agreeing to this product's EULA
@@ -81,9 +82,6 @@ class M6GP:
 		dim_min = 1, dim_max = 9999, threads=1, random_state = 42, verbose = True, 
 		model_class=None, fitnesses=["Accuracy","Size"]):
 
-		if sum( [0 if op in [("+",2),("-",2),("*",2),("/",2)] else 0 for op in operators ] ) > 0:
-			print( "[Warning] Some of the following operators may not be supported:", operators)
-
 		self.operators = operators
 
 		self.max_initial_depth = max_initial_depth
@@ -101,6 +99,10 @@ class M6GP:
 		self.model_class = model_class
 		if self.model_class is None:
 			self.model_class = MahalanobisDistanceClassifier()
+		elif "random_state" in getattr(self.model_class, "get_params", dict)():
+			# Seed stochastic models (e.g., random forests) so runs are reproducible
+			self.model_class = deepcopy(self.model_class)
+			self.model_class.set_params(random_state=random_state)
 
 		self.fitnesses = fitnesses
 

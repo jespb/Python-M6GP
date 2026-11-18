@@ -164,7 +164,7 @@ class Individual:
 
 				if fitnessType == "WAF":
 					self.getTrainingPredictions()
-					waf = f1_score(self.trainingPredictions, self.training_Y, average="weighted")
+					waf = f1_score(self.training_Y, self.trainingPredictions, average="weighted")
 					self.fitness.append(waf)
 
 				if fitnessType == "2FOLD":
@@ -220,7 +220,7 @@ class Individual:
 
 		if self.fitnesses[0] == "WAF":
 			self.getTrainingPredictions()
-			return f1_score(self.trainingPredictions, self.training_Y, average="weighted")
+			return f1_score(self.training_Y, self.trainingPredictions, average="weighted")
 
 
 	def getTestMeasure(self, test_X, test_Y):
@@ -234,7 +234,7 @@ class Individual:
 
 		if self.fitnesses[0] == "WAF":
 			self.getTestPredictions(test_X)
-			return f1_score(self.testPredictions, test_Y, average="weighted")
+			return f1_score(test_Y, self.testPredictions, average="weighted")
 
 
 
@@ -291,7 +291,7 @@ class Individual:
 		else:
 			pred = self.predict(X)
 
-		return f1_score(pred, Y, average="weighted")
+		return f1_score(Y, pred, average="weighted")
 
 
 	def getKappa(self, X, Y,pred=None):
@@ -324,10 +324,10 @@ class Individual:
 		min_float32 = np.finfo(np.float32).min
 		ret = pd.DataFrame()
 		for i in range(len(self.dimensions)):
-			a = self.dimensions[i].calculate(X)
-			a[a ==  np.inf] = max_float32
-			a[a == -np.inf] = min_float32
-			ret["#"+str(i)] = a
+			a = self.dimensions[i].calculate(X).astype(np.float64)
+			# Models such as sklearn trees cast X to float32: clip finite overflows too, not only +-inf
+			a = np.nan_to_num(a, nan=0.0)
+			ret["#"+str(i)] = np.clip(a, min_float32, max_float32)
 		return ret
 
 
