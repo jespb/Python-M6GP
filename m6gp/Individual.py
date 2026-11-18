@@ -74,17 +74,21 @@ class Individual:
 
 	def fit(self, Tr_x, Tr_y):
 		'''
-		Trains the classifier which will be used in the fitness function
+		Sets the training data. The full-data model is only trained when needed (see getModel),
+		since fitnesses such as 2FOLD do not use it.
 		'''
 		if self.model is None:
 			self.training_X = Tr_x
 			self.training_Y = Tr_y
 
+	def getModel(self):
+		'''
+		Returns the model trained on the full training data, training it on first use.
+		'''
+		if self.model is None:
 			self.model = self.createModel()
-	
-			hyper_X = self.convert(Tr_x)
-
-			self.model.fit(hyper_X,Tr_y)
+			self.model.fit(self.convert(self.training_X), self.training_Y)
+		return self.model
 
 	def getNumberOfDominatedSolutions(self, population):
 		if self.numberOfDominatedSolutions == -1:
@@ -149,8 +153,6 @@ class Individual:
 
 			self.fitness=[]
 			
-			self.fit(self.training_X, self.training_Y)
-
 			for fitnessType in self.fitnesses:
 				if fitnessType == "Accuracy":
 					self.getTrainingPredictions()
@@ -192,7 +194,7 @@ class Individual:
 
 				if fitnessType == "Size(Classifier)":
 					self.getTrainingPredictions()
-					size = sum([x.tree_.node_count for x in self.model.estimators_ ])
+					size = sum([x.tree_.node_count for x in self.getModel().estimators_ ])
 					self.fitness.append( 0 - size )
 
 				if fitnessType == "MDL":
@@ -201,7 +203,7 @@ class Individual:
 					acc = accuracy_score(self.trainingPredictions, self.training_Y)
 					
 					size_fe = self.getSize()
-					size_classifier = sum([x.tree_.node_count for x in self.model.estimators_ ])
+					size_classifier = sum([x.tree_.node_count for x in self.getModel().estimators_ ])
 
 					self.fitness.append( 0- (size_fe + size_classifier + (1-acc)*len(self.training_Y)) )
 
@@ -336,7 +338,7 @@ class Individual:
 		Returns the class prediction of a sample.
 		'''
 		hyper_X = self.convert(X)
-		predictions = self.model.predict(hyper_X)
+		predictions = self.getModel().predict(hyper_X)
 
 		return predictions
 

@@ -402,11 +402,10 @@ def fitIndividuals(a):
 	ind,x,y = a
 	ind.getFitnesses(x,y)
 
+	# Only send back what the fitness computation produced (None otherwise);
+	# the parent trains the full model lazily, if it ever needs it
 	ret = []
-	if "FOLD" in ind.fitnesses:
-		ret.append(None)
-	else:
-		ret.append(ind.getTrainingPredictions())
+	ret.append(ind.trainingPredictions)
 	ret.append(ind.getFitnesses())
 	ret.append(ind.model)
 
