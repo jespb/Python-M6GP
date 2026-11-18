@@ -1,11 +1,9 @@
+import argparse
 
-from sys import argv
-
-from m3gp.MahalanobisDistanceClassifier import MahalanobisDistanceClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeRegressor
 
-# 
+#
 # By using this file, you are agreeing to this product's EULA
 #
 # This product can be obtained in https://github.com/jespb/Python-M6GP
@@ -14,125 +12,53 @@ from sklearn.tree import DecisionTreeRegressor
 #
 
 
-# Operators to be used by the models
-# Only these operators are available. To add mode, edit m6gp.Node.calculate(self, sample)
-
-#OPERATORS = [("+",2),("-",2),("*",2),("/",2),("log2",1), ("max", 3)] # Example
-OPERATORS = [("+",2),("-",2),("*",2),("/",2)] # Default
-
-# Initial Maximum depth
-MAX_DEPTH = 6
-
-# Number of models in the population
-POPULATION_SIZE = 500
-
-# Maximum number of iterations
-MAX_GENERATION = 100
-
-# Fraction of the dataset to be used as training (used by Main_M6GP_standalone.py)
-TRAIN_FRACTION = 0.70
-
-# Shuffle the dataset (used by Main_M6GP_standalone.py)
-SHUFFLE = True
-
-# Dimensions maximum depth
-LIMIT_DEPTH=17
-
-# Number of individuals to be used in the tournament
-TOURNAMENT_SIZE = 5
-
-# Number of runs (used by Main_M6GP_standalone.py)
-RUNS = 30
-
-# Verbose
-VERBOSE = True
-
-# Number of CPU Threads to be used
-THREADS = 1
-
-# Minimum number of dimensions
-DIM_MIN = 1
-
-# An unreachable number of dimensions
-DIM_MAX = 9999 
-
-# Random state
-RANDOM_STATE = 42
-
-# Models wrapped by the M6GP models
-MODEL = [MahalanobisDistanceClassifier(), RandomForestClassifier(max_depth=6), DecisionTreeRegressor(max_depth=6)][0]
-MODEL_NAME = MODEL.__class__.__name__
-
-# Fitness used by the M6GP models
-FITNESSES = ["2FOLD", "Size"]
+# Models that can be wrapped by M6GP (-model)
+MODELS = {
+	"rf":  lambda: RandomForestClassifier(max_depth=6),
+	"dtr": lambda: DecisionTreeRegressor(max_depth=6),
+}
 
 
-
-DATASETS_DIR = "datasets/"
-OUTPUT_DIR = "results/"
-
-DATASETS = [
-	"heart.csv",  
-]
-
-OUTPUT = "Classification"
+def parse_operators(s):
+	"""'+,2;-,2;log2,1' -> [('+',2), ('-',2), ('log2',1)].
+	Only operators implemented in m6gp.Node.calculate are available."""
+	try:
+		return [(name, int(arity)) for name, arity in (op.split(",") for op in s.split(";"))]
+	except ValueError:
+		raise argparse.ArgumentTypeError("expected 'op,arity;op,arity;...', got %r" % s)
 
 
+def semicolon_list(s):
+	return s.split(";")
 
 
-if "-dsdir" in argv:
-	DATASETS_DIR = argv[argv.index("-dsdir")+1]
+def get_args(argv=None):
+	p = argparse.ArgumentParser(description="M6GP standalone runner",
+		formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
-if "-odir" in argv:
-	OUTPUT_DIR = argv[argv.index("-odir")+1]
+	p.add_argument("-dsdir", default="datasets/", help="datasets directory")
+	p.add_argument("-odir",  default="results/", help="output directory")
+	p.add_argument("-d",     dest="datasets", type=semicolon_list, default=["heart.csv"],
+		help="';'-separated list of datasets")
+	p.add_argument("-runs",  type=int, default=30, help="number of runs (run r uses seed r)")
+	p.add_argument("-op",    dest="operators", type=parse_operators,
+		default=parse_operators("+,2;-,2;*,2;/,2"), help="operators, e.g. '+,2;-,2;log2,1'")
+	p.add_argument("-md",    dest="max_depth", type=int, default=6, help="max initial depth")
+	p.add_argument("-ld",    dest="limit_depth", type=int, default=17, help="max dimension depth")
+	p.add_argument("-ps",    dest="population_size", type=int, default=500)
+	p.add_argument("-mg",    dest="max_generation", type=int, default=100)
+	p.add_argument("-tf",    dest="train_fraction", type=float, default=0.70)
+	p.add_argument("-ts",    dest="tournament_size", type=int, default=5)
+	p.add_argument("-t",     dest="threads", type=int, default=1)
+	p.add_argument("-dmin",  type=int, default=1, help="min number of dimensions")
+	p.add_argument("-dmax",  type=int, default=9999, help="max number of dimensions")
+	p.add_argument("-model", choices=MODELS, default="rf", help="wrapped model")
+	p.add_argument("-fit",   dest="fitnesses", type=semicolon_list, default=["2FOLD", "Size"],
+		help="';'-separated fitnesses")
+	p.add_argument("-overwrite", action="store_true", help="overwrite existing result files")
+	p.add_argument("-s",     dest="verbose", action="store_false", help="silent mode")
 
-if "-d" in argv:
-	DATASETS = argv[argv.index("-d")+1].split(";")
-
-if "-runs" in argv:
-	RUNS = int(argv[argv.index("-runs")+1])
-
-if "-op" in argv:
-	OPERATORS = argv[argv.index("-op")+1].split(";")
-	for i in range(len(OPERATORS)):
-		OPERATORS[i] = OPERATORS[i].split(",")
-		OPERATORS[i][1] = int(OPERATORS[i][1])
-
-if "-md" in argv:
-	MAX_DEPTH = int(argv[argv.index("-md")+1])
-
-if "-ps" in argv:
-	POPULATION_SIZE = int(argv[argv.index("-ps")+1])
-
-if "-mg" in argv:
-	MAX_GENERATION = int(argv[argv.index("-mg")+1])
-
-if "-tf" in argv:
-	TRAIN_FRACTION = float(argv[argv.index("-tf")+1])
-
-if "-ts" in argv:
-	TOURNAMENT_SIZE = int(argv[argv.index("-ts")+1])
-
-if "-es" in argv:
-	ELITISM_SIZE = int(argv[argv.index("-es")+1])
-
-if "-dontshuffle" in argv:
-	SHUFFLE = False
-
-if "-s" in argv:
-	VERBOSE = False
-
-if "-t" in argv:
-	THREADS = int(argv[argv.index("-t")+1])
-
-if "-dmin" in argv:
-	DIM_MIN = int(argv[argv.index("-dmin")+1])
-
-if "-dmax" in argv:
-	DIM_MAX = int(argv[argv.index("-dmax")+1])
-
-
-if "-rs" in argv:
-	RANDOM_STATE = int(argv[argv.index("-rs")+1])
-
-
+	args = p.parse_args(argv)
+	args.model_name = MODELS[args.model]().__class__.__name__
+	args.model = MODELS[args.model]()
+	return args
